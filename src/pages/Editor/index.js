@@ -16,7 +16,7 @@ import { AMFLoader } from 'three/examples/jsm/loaders/AMFLoader';
 // import { Scene } from './Components/ARComponents/build/three';
 import { AppleOutlined, AndroidOutlined } from '@ant-design/icons';
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
-
+import Scenecomponent from './Scenecomponent';
 
 
 const { Option } = Select;
@@ -51,372 +51,26 @@ export default class index extends PureComponent {
       localX: 0,
       localY: 0,
       localZ: 0,
+      xuanzhuanX:0,
+      xuanzhuanY:0,
+      xuanzhuanZ:0,
+      fangsuoX:1,
+      fangsuoY:1,
+      fangsuoZ:1,
       modelName: "",
       sceneName: "",
       sceneDescpition: "",
+      backgroundUrl:"",
+      modelType:"",
+      modelURL:"",
+      textureURL:"",
     }
   }
 
   componentDidMount() {
-
-    this.init4();
+    
   }
-  init1 = () => {
-    var container;
-
-    var camera, scene, renderer;
-
-    var mouseX = 0, mouseY = 0;
-
-    var windowHalfX = this.mount.clientWidth / 2;
-    var windowHalfY = this.mount.clientHeight / 2;
-
-    var object;
-
-    camera = new THREE.PerspectiveCamera(45, this.mount.clientWidth / this.mount.clientWidth, 1, 2000);
-    camera.position.z = 250;
-
-    // scene
-
-    scene = new THREE.Scene();
-
-    var ambientLight = new THREE.AmbientLight(0xcccccc, 0.4);
-    scene.add(ambientLight);
-
-    var pointLight = new THREE.PointLight(0xffffff, 0.8);
-    camera.add(pointLight);
-    scene.add(camera);
-
-    // manager
-
-    function loadModel() {
-
-      object.traverse(function (child) {
-
-        if (child.isMesh) child.material.map = texture;
-
-      });
-
-      object.position.y = - 95;
-      scene.add(object);
-
-    }
-
-    var manager = new THREE.LoadingManager(loadModel);
-
-    manager.onProgress = function (item, loaded, total) {
-
-      console.log(item, loaded, total);
-
-    };
-
-    // texture
-
-    var textureLoader = new THREE.TextureLoader(manager);
-
-    var texture = textureLoader.load('./source/textures/uv_grid_opengl.jpg');
-
-    // model
-
-    function onProgress(xhr) {
-
-      if (xhr.lengthComputable) {
-
-        var percentComplete = xhr.loaded / xhr.total * 100;
-        console.log('model ' + Math.round(percentComplete, 2) + '% downloaded');
-
-      }
-
-    }
-
-    function onError() { }
-
-    var loader = new OBJLoader(manager);
-
-    loader.load('./source/models/obj/male02/male02.obj', function (obj) {
-
-      object = obj;
-
-    }, onProgress, onError);
-
-    //
-
-    renderer = new THREE.WebGLRenderer();
-    renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.setSize(this.mount.clientWidth, this.mount.clientWidth);
-    this.mount.appendChild(renderer.domElement);
-
-    document.addEventListener('mousemove', onDocumentMouseMove, false);
-
-    //
-
-    window.addEventListener('resize', onWindowResize, false);
-
-    animate();
-
-
-    function initLoader() {
-
-
-    }
-
-    function onWindowResize() {
-
-      windowHalfX = this.moount.clientWidth / 2;
-      windowHalfY = this.mount.clientHeight / 2;
-
-      camera.aspect = this.mount.clientWidth / this.mount.clientWidth;
-      camera.updateProjectionMatrix();
-
-      renderer.setSize(this.mount.clientWidth, this.mount.clientWidth);
-
-    }
-
-    function onDocumentMouseMove(event) {
-
-      mouseX = (event.clientX - windowHalfX) / 2;
-      mouseY = (event.clientY - windowHalfY) / 2;
-
-    }
-
-    //
-
-    function animate() {
-
-      requestAnimationFrame(animate);
-      render();
-
-    }
-
-    function render() {
-
-      camera.position.x += (mouseX - camera.position.x) * .05;
-      camera.position.y += (- mouseY - camera.position.y) * .05;
-
-      camera.lookAt(scene.position);
-
-      renderer.render(scene, camera);
-
-    }
-  }
-  init = () => {
-    const scene = new THREE.Scene()
-    const camera = new THREE.PerspectiveCamera(75, this.mount.clientWidth / this.mount.clientHeight, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer({ antialias: true });
-    this.scene = scene
-    this.camera = camera
-    this.renderer = renderer
-    renderer.setSize(this.mount.clientWidth, this.mount.clientHeight);
-    this.mount.appendChild(renderer.domElement);
-    camera.position.z = 5;
-    var axis = new THREE.AxisHelper(3);
-    scene.add(axis);
-    this.createCube()
-    // this.createLine()
-    this.animate();
-
-  }
-
-  createCube = () => {
-    const geometry = new THREE.BoxGeometry(1, 2, 1, 4);
-    const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-    const cube = new THREE.Mesh(geometry, material);
-    cube.rotation.x = this.state.localX;
-    cube.rotation.y = this.state.localY;
-    cube.rotation.z = this.state.localZ;
-    this.cube = cube
-    this.scene.add(cube);
-  }
-
-  createLine = () => {
-    const material = new THREE.LineBasicMaterial({ color: 0x0f00ff }) //定义线的材质
-    const geometry = new THREE.Geometry()
-    geometry.vertices.push(new THREE.Vector3(-2, 0, 0))
-    geometry.vertices.push(new THREE.Vector3(0, 2, 0)); //相当于是从 将前两个坐标连成一条线
-    // geometry.vertices.push(new THREE.Vector3( 2, 0, 0) );
-    const line = new THREE.Line(geometry, material)
-    this.line = line
-    line.position.x = -1
-    line.position.y = 2
-    this.scene.add(line)
-  }
-
-  animate = () => {
-    requestAnimationFrame(this.animate);
-    this.cube.rotation.x += 0.01;
-    this.cube.rotation.y += 0.01;
-    // this.line.rotation.x += 0.02;
-    // this.cube.translate(this.state.localX, this.state.localY, this.state.localZ);
-    this.renderer.render(this.scene, this.camera);
-  }
-  init3 = () => {
-    var camera, scene, renderer;
-    renderer = new THREE.WebGL1Renderer({ antialias: true });
-    renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.setSize(this.mount.clientWidth, this.mount.clientHeight);
-    this.mount.appendChild(renderer.domElement);
-    scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x333333);
-
-    scene.add(new THREE.AmbientLight(0xffffff, 0.2));
-
-    camera = new THREE.PerspectiveCamera(35, this.mount.clientWidth / this.mount.clientHeight, 1, 500);
-
-    // Z is up for objects intended to be 3D printed.
-
-    camera.up.set(0, 0, 1);
-    camera.position.set(- 80, - 90, 150);
-    scene.add(camera);
-
-    var controls = new OrbitControls(camera, renderer.domElement);
-    controls.addEventListener('change', render);
-    controls.minDistance = 50;
-    controls.maxDistance = 300;
-    controls.enablePan = false;
-    controls.target.set(80, 65, 20);
-    controls.update();
-
-    var pointLight = new THREE.PointLight(0xffffff, 0.8);
-    camera.add(pointLight);
-    var loader = new ThreeMFLoader();
-    loader.load('./source/models/3mf/cube_gears.3mf', function (object) {
-      console.log(object);
-      scene.add(object);
-      render();
-
-    });
-
-    window.addEventListener('resize', onWindowResize, false);
-    function onWindowResize() {
-
-      camera.aspect = this.mount.clientWidth / this.mount.clientHeight;
-      camera.updateProjectionMatrix();
-
-      renderer.setSize(this.mount.clientWidth, this.mount.clientHeight);
-
-      render();
-
-    }
-
-    function render() {
-
-      renderer.render(scene, camera);
-
-    }
-  }
-  init4 = () => {
-    var camera, scene, renderer;
-    var width = this.mount.clientWidth;
-    var high = this.mount.clientHeight;
-    scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x999999);
-
-    scene.add(new THREE.AmbientLight(0x999999));
-
-    camera = new THREE.PerspectiveCamera(35, this.mount.clientWidth / this.mount.clientHeight, 1, 2000);
-
-    // Z is up for objects intended to be 3D printed.
-
-    camera.up.set(0, 0, 1);
-    camera.position.set(0, 20, 6);
-
-    camera.add(new THREE.PointLight(0xffffff, 0.8));
-
-    scene.add(camera);
-    // this.createGeomety;
-    const geometry = new THREE.BoxGeometry(1, 2, 1, 4);
-    const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-
-    geometry.translate(this.state.localX, this.state.localY, this.state.localZ);
-
-    const cube = new THREE.Mesh(geometry, material);
-    // cube.rotation.x = this.state.localX;
-    // cube.rotation.y = this.state.localY;
-    // cube.rotation.z = this.state.localZ;
-
-    this.cube = cube
-    scene.add(cube);
-    // 
-    var grid = new THREE.GridHelper(50, 50, 0xffffff, 0x555555);
-    grid.rotateOnAxis(new THREE.Vector3(1, 0, 0), 90 * (Math.PI / 180));
-    scene.add(grid);
-
-    renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.setSize(this.mount.clientWidth, this.mount.clientHeight);
-    this.mount.appendChild(renderer.domElement);
-    var loader = new AMFLoader();
-    var path = "./source/models/amf/rook.amf";
-    // var path='http://39.96.182.123/three/examples/models/amf/rook.amf';
-    loader.load(path, function (amfobject) {
-      console.log("进这里了吗");
-      console.log(path);
-      console.log(amfobject);
-      scene.add(amfobject);
-      render();
-
-    });
-    var controls = new OrbitControls(camera, renderer.domElement);
-    controls.addEventListener('change', render);
-    controls.target.set(0, 1.2, 2);
-    controls.update();
-
-    window.addEventListener('resize', onWindowResize, false);
-    function onWindowResize() {
-      camera.aspect = width / high;
-      camera.updateProjectionMatrix();
-
-      renderer.setSize(width, high);
-      render();
-
-      // camera.aspect = this.mount.clientWidth / this.mount.clientHeight;
-      // camera.updateProjectionMatrix();
-
-      // renderer.setSize(this.mount.clientWidth , this.mount.clientHeight);
-
-      // render();
-
-    }
-
-    function render() {
-
-      renderer.render(scene, camera);
-
-    }
-
-  }
-  createGeomety = () => {
-
-  }
-  // componentWillUnmount() {
-  //   this.mount.removeChild(this.renderer.domElement)
-  // }
-  // validate = () => {
-  //   const { form, dispatch, submitting } = this.props;
-  //   const { getFieldDecorator, validateFieldsAndScroll, getFieldsError } = form;
-  //   validateFieldsAndScroll((error, values) => {
-  //     if (!error) {
-  //       // submit the values
-  //       var data = Object.keys(values)
-  //         .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(values[k]))
-  //         .join('&');
-  //       dispatch({
-  //         type: 'modifyDataLbc/addSelfWechatBus',
-  //         payload: data,
-  //         callback: () => {
-  //           const { addSelfWechatBus: { changeData } } = this.props;
-  //           if (changeData.success === true) {
-  //             message.success(changeData.msg);
-  //             this.return(dispatch);
-  //           }
-  //           else {
-  //             message.error(changeData.msg);
-  //           }
-  //         },
-  //       });
-  //     }
-  //   });
-  // }
+ 
   Configure = () => {
     // handleChange = info => {
     //   if (info.file.status === 'uploading') {
@@ -586,23 +240,79 @@ export default class index extends PureComponent {
     if (event && event.target && event.target.value) {
       let value = event.target.value;
       console.log(value);
-      this.state.localX = value;
-      this.init4();
+      // this.state.localX = value;
+      this.setState({
+        localX:value,
+      });
       console.log(this.state.localX);
     }
   }
   transLateY = (event) => {
     if (event && event.target && event.target.value) {
       let value = event.target.value;
-      this.state.localY = value;
-      this.init4();
+      this.setState({
+        localY:value,
+      });
     }
   }
   transLateZ = (event) => {
     if (event && event.target && event.target.value) {
       let value = event.target.value;
-      this.state.localY = value;
-      this.init4();
+      this.setState({
+        localZ:value,
+      });
+    }
+  }
+  xuanzhuanX = (event) => {
+    if (event && event.target && event.target.value) {
+      let value = event.target.value;
+      console.log(value);
+      this.setState({
+        xuanzhuanX:value,
+      });
+      console.log(this.state.localX);
+    }
+  }
+  xuanzhuanY = (event) => {
+    if (event && event.target && event.target.value) {
+      let value = event.target.value;
+      this.setState({
+        xuanzhuanY:value,
+      });
+    }
+  }
+  xuanzhuanZ = (event) => {
+    if (event && event.target && event.target.value) {
+      let value = event.target.value;
+      this.setState({
+        xuanzhuanZ:value,
+      });
+    }
+  }
+  fangsuoX = (event) => {
+    if (event && event.target && event.target.value) {
+      let value = event.target.value;
+      console.log(value);
+      this.setState({
+        fangsuoX:value,
+      });
+      console.log(this.state.localX);
+    }
+  }
+  fangsuoY = (event) => {
+    if (event && event.target && event.target.value) {
+      let value = event.target.value;
+      this.setState({
+        fangsuoY:value,
+      });
+    }
+  }
+  fangsuoZ = (event) => {
+    if (event && event.target && event.target.value) {
+      let value = event.target.value;
+      this.setState({
+        fangsuoZ:value,
+      });
     }
   }
   SceneConfigure = () => {
@@ -615,7 +325,7 @@ export default class index extends PureComponent {
             <Card className={styles.card} bordered={false}>
               <FormItem label="模型名称：">
                 {/* {getFieldDecorator('ModalName')( */}
-                <Input placeholder="情输入场景名称" />
+                <Input placeholder="请输入场景名称" />
                 {/* )} */}
               </FormItem>
               <FormItem label="布局：">
@@ -640,18 +350,18 @@ export default class index extends PureComponent {
                       <Col span={6}><Input onChange={event => this.transLateZ(event)} defaultValue="0"></Input></Col>
                     </Row>
                     <br />
-                    <Row >
+                    {/* <Row >
                       <Col span={6}>旋转</Col>
-                      <Col span={6}><Input onChange={event => this.transLateX(event)} defaultValue="0"></Input></Col>
-                      <Col span={6}><Input onChange={event => this.transLateX(event)} defaultValue="0"></Input></Col>
-                      <Col span={6}><Input onChange={event => this.transLateX(event)} defaultValue="0"></Input></Col>
+                      <Col span={6}><Input onChange={event => this.xuanzhuanX(event)} defaultValue="0"></Input></Col>
+                      <Col span={6}><Input onChange={event => this.xuanzhuanY(event)} defaultValue="0"></Input></Col>
+                      <Col span={6}><Input onChange={event => this.xuanzhuanZ(event)} defaultValue="0"></Input></Col>
                     </Row>
-                    <br />
+                    <br /> */}
                     <Row >
                       <Col span={6}>缩放</Col>
-                      <Col span={6}><Input onChange={event => this.transLateX(event)} defaultValue="0"></Input></Col>
-                      <Col span={6}><Input onChange={event => this.transLateX(event)} defaultValue="0"></Input></Col>
-                      <Col span={6}><Input onChange={event => this.transLateX(event)} defaultValue="0"></Input></Col>
+                      <Col span={6}><Input onChange={event => this.fangsuoX(event)} defaultValue="1"></Input></Col>
+                      <Col span={6}><Input onChange={event => this.fangsuoY(event)} defaultValue="1"></Input></Col>
+                      <Col span={6}><Input onChange={event => this.fangsuoZ(event)} defaultValue="1"></Input></Col>
                     </Row>
                   </Form>
                 </div>
@@ -669,10 +379,7 @@ export default class index extends PureComponent {
 
   }
 
-  return = (dispatch) => {
-    //dispatch(routerRedux.push('selfwbview'));
-    this.props.history.goBack();
-  }
+ 
   returnClick = () => {
     //const { dispatch } = this.props;
     //dispatch(routerRedux.push('selfwbview'));
@@ -721,7 +428,9 @@ export default class index extends PureComponent {
               </Col>
               <Col span={10}>
                 <Card bordered={false}>
-                  {this.Scene()}
+                  {/* {this.Scene()} */}
+                  <Scenecomponent localX={this.state.localX}localY={this.state.localY}localZ={this.state.localZ} fangsuoX={this.state.fangsuoX} fangsuoY={this.state.fangsuoY} fangsuoZ={this.state.fangsuoZ}
+                  backgroundUrl={this.state.backgroundUrl} modelType={this.state.modelType} modelURL={this.state.modelURL} textureURL={this.state.textureURL}/>
                 </Card>
               </Col>
               <Col span={5}>

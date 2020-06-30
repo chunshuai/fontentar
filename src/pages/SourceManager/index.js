@@ -137,12 +137,12 @@ export default class index extends React.Component {
                                         </Form>
                                        
                                     </Modal>
-                                    <Link to={{ pathname: "ARManagerMd/ARManagerEdit", params: { username: record.username, roleId: record.roleId } }}>编辑</Link>
+                                    <Button onClick={this.newHandler}>编辑</Button>
                                     <Divider type="vertical" />
-                                    <Link to={{ pathname: "ARManagerMd/ARManagerView", params: { username: record.username, roleName: record.role } }}>查看</Link>
+                                    <Button onClick={this.newHandler}>查看</Button>
                                     <Divider type="vertical" />
                                     <Popconfirm title="是否删除？" onConfirm={this.unlockHandler.bind(null, record.username)}>
-                                        <a>删除</a>
+                                        <Button>删除</Button>
                                     </Popconfirm>
                                 </div>
                         }

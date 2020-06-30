@@ -18,8 +18,9 @@ export default class index extends React.Component {
 
     showModal1 = () => {
         this.setState({
-            visible11: true,
+            visible1: true,
         });
+        console.log(this.state.visible1);
     };
 
     handleOk1 = e => {
@@ -32,7 +33,7 @@ export default class index extends React.Component {
 
     handleCancel1 = e => {
         console.log(e);
-        this.state.visible1 = false;
+        // this.state.visible1 = false;
         this.setState({
             visible1: false,
         });
