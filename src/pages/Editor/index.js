@@ -51,13 +51,15 @@ export default class index extends PureComponent {
       localX: 0,
       localY: 0,
       localZ: 0,
-
+      modelName: "",
+      sceneName: "",
+      sceneDescpition: "",
     }
   }
 
   componentDidMount() {
 
-    this.init();
+    this.init4();
   }
   init1 = () => {
     var container;
@@ -311,17 +313,30 @@ export default class index extends PureComponent {
 
     scene.add(new THREE.AmbientLight(0x999999));
 
-    camera = new THREE.PerspectiveCamera(35, this.mount.clientWidth / this.mount.clientHeight, 1, 500);
+    camera = new THREE.PerspectiveCamera(35, this.mount.clientWidth / this.mount.clientHeight, 1, 2000);
 
     // Z is up for objects intended to be 3D printed.
 
     camera.up.set(0, 0, 1);
-    camera.position.set(0, - 9, 6);
+    camera.position.set(0, 20, 6);
 
     camera.add(new THREE.PointLight(0xffffff, 0.8));
 
     scene.add(camera);
+    // this.createGeomety;
+    const geometry = new THREE.BoxGeometry(1, 2, 1, 4);
+    const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
 
+    geometry.translate(this.state.localX, this.state.localY, this.state.localZ);
+
+    const cube = new THREE.Mesh(geometry, material);
+    // cube.rotation.x = this.state.localX;
+    // cube.rotation.y = this.state.localY;
+    // cube.rotation.z = this.state.localZ;
+
+    this.cube = cube
+    scene.add(cube);
+    // 
     var grid = new THREE.GridHelper(50, 50, 0xffffff, 0x555555);
     grid.rotateOnAxis(new THREE.Vector3(1, 0, 0), 90 * (Math.PI / 180));
     scene.add(grid);
@@ -330,18 +345,17 @@ export default class index extends PureComponent {
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(this.mount.clientWidth, this.mount.clientHeight);
     this.mount.appendChild(renderer.domElement);
-
     var loader = new AMFLoader();
-    var path = "/source/models/amf/rook.amf";
+    var path = "./source/models/amf/rook.amf";
     // var path='http://39.96.182.123/three/examples/models/amf/rook.amf';
     loader.load(path, function (amfobject) {
+      console.log("进这里了吗");
       console.log(path);
       console.log(amfobject);
       scene.add(amfobject);
       render();
 
     });
-
     var controls = new OrbitControls(camera, renderer.domElement);
     controls.addEventListener('change', render);
     controls.target.set(0, 1.2, 2);
@@ -369,6 +383,9 @@ export default class index extends PureComponent {
       renderer.render(scene, camera);
 
     }
+
+  }
+  createGeomety = () => {
 
   }
   // componentWillUnmount() {
@@ -566,24 +583,26 @@ export default class index extends PureComponent {
   }
 
   transLateX = (event) => {
-    if(event && event.target && event.target.value){
+    if (event && event.target && event.target.value) {
       let value = event.target.value;
       console.log(value);
-      this.setState(()=>({localX:value }));
+      this.state.localX = value;
+      this.init4();
+      console.log(this.state.localX);
     }
   }
   transLateY = (event) => {
-    if(event && event.target && event.target.value){
+    if (event && event.target && event.target.value) {
       let value = event.target.value;
-      console.log(value);
-      this.setState(()=>({localY:value }));
+      this.state.localY = value;
+      this.init4();
     }
   }
   transLateZ = (event) => {
-    if(event && event.target && event.target.value){
+    if (event && event.target && event.target.value) {
       let value = event.target.value;
-      console.log(value);
-      this.setState(()=>({localZ:value }));
+      this.state.localY = value;
+      this.init4();
     }
   }
   SceneConfigure = () => {
