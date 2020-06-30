@@ -1,0 +1,26 @@
+@import "~antd/lib/style/themes/default.less";
+@import "../../utils/utils.less";
+
+.disabled {
+  :global {
+    .ant-input-disabled {
+      background-color: #fff;
+      opacity: 1;
+      cursor: not-allowed;
+      color: #000;
+      border: 1px;
+    }
+  }
+}
+
+.disabled {
+  :global {
+    .ant-select-disabled .ant-select-selection {
+      background: #fff;
+      color: #000;
+      opacity: 1;
+      border: antiquewhite;
+      cursor: not-allowed;
+    }
+  }
+}
