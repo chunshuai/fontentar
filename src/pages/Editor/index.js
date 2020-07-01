@@ -338,6 +338,29 @@ export default class index extends PureComponent {
       });
     }
   }
+  removeModel=()=>{
+    this.setState({
+      localX: 0,
+      localY: 0,
+      localZ: 0,
+      xuanzhuanX: 0,
+      xuanzhuanY: 0,
+      xuanzhuanZ: 0,
+      fangsuoX: 1,
+      fangsuoY: 1,
+      fangsuoZ: 1,
+      modelName: "",
+      sceneName: "",
+      sceneDescpition: "",
+      modelType: "",
+      modelURL: "",
+      textureURL: "",
+      source: [{
+        url: "../source/textures/uv_grid_opengl.jpg",
+        id: "0",
+      },],
+    });
+  }
   SceneConfigure = () => {
 
     return (
@@ -367,10 +390,10 @@ export default class index extends PureComponent {
                     <Row ><Form></Form>
                       <Col span={6}>位置</Col>
                       <Col span={6}>
-                        <Input onChange={event => this.transLateX(event)} defaultValue="0"></Input>
+                        <Input onChange={event => this.transLateX(event)} defaultValue={this.state.localX}></Input>
                       </Col>
-                      <Col span={6}><Input onChange={event => this.transLateY(event)} defaultValue="0"></Input></Col>
-                      <Col span={6}><Input onChange={event => this.transLateZ(event)} defaultValue="0"></Input></Col>
+                      <Col span={6}><Input onChange={event => this.transLateY(event)} defaultValue={this.state.localY}></Input></Col>
+                      <Col span={6}><Input onChange={event => this.transLateZ(event)} defaultValue={this.state.localZ}></Input></Col>
                     </Row>
                     <br />
                     {/* <Row >
@@ -382,16 +405,18 @@ export default class index extends PureComponent {
                     <br /> */}
                     <Row >
                       <Col span={6}>缩放</Col>
-                      <Col span={6}><Input onChange={event => this.fangsuoX(event)} defaultValue="1"></Input></Col>
-                      <Col span={6}><Input onChange={event => this.fangsuoY(event)} defaultValue="1"></Input></Col>
-                      <Col span={6}><Input onChange={event => this.fangsuoZ(event)} defaultValue="1"></Input></Col>
+                      <Col span={6}><Input onChange={event => this.fangsuoX(event)} defaultValue={this.state.fangsuoX}></Input></Col>
+                      <Col span={6}><Input onChange={event => this.fangsuoY(event)} defaultValue={this.state.fangsuoY}></Input></Col>
+                      <Col span={6}><Input onChange={event => this.fangsuoZ(event)} defaultValue={this.state.fangsuoZ}></Input></Col>
                     </Row>
                   </Form>
                 </div>
 
-
+                  
               </FormItem>
-
+                  <div>
+                    <Button type="primary" onClick={this.removeModel}>去除模型</Button>
+                  </div>
             </Card>
           </Form>
 
