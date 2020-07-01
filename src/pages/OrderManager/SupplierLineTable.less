@@ -1,0 +1,55 @@
+@import "~antd/lib/style/themes/default.less";
+@import "../../utils/utils.less";
+
+.toolBar {
+  margin-bottom: 12px;
+}
+
+.tablePagination {
+  :global {
+    // .ant-table-pagination.ant-pagination {
+    //   margin: 16px 0 0 0;
+    // }
+    .ant-table-tbody > tr.ant-table-row-hover > td,
+    .ant-table-tbody > tr:hover > td {
+      background: #fff;
+    }
+  }
+}
+
+th.center {
+  text-align: center !important;
+}
+
+.operation {
+  text-align: center; //这个没有意义
+}
+
+#cardtype table {
+  /* font-size: 13px; */
+}
+
+.content {
+  margin-bottom: -16px;
+}
+
+.ctmodal {
+  :global {
+    .ant-form-item:nth-child(1) {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.inputnumber {
+  :global {
+    .ant-input-number {
+      margin-right: 0;
+      width: 100%;
+    }
+  }
+}
+
+.searchForm {
+  display: inline-block;
+}

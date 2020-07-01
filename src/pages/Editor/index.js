@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import { routerRedux, Route, Switch } from 'dva/router';
 import { Spin, Card, Button, Form, Icon, Col, Row, DatePicker, TimePicker, Input, Select, Popover, Tabs, Upload, List } from 'antd';
 import { connect } from 'dva';
@@ -6,6 +6,7 @@ import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import FooterToolbar from '../../../components/FooterToolbar';
 import styles from './style.less';
 import { message } from 'antd';
+import modalpic from './source/pic/model1.png';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
@@ -44,7 +45,7 @@ function beforeUpload(file) {
   return isJpgOrPng && isLt2M;
 }
 // @Form.create()
-export default class index extends PureComponent {
+export default class index extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -62,24 +63,30 @@ export default class index extends PureComponent {
       sceneName: "",
       sceneDescpition: "",
       backgroundUrl: "",
-      modelType: "",
+      0: "amf",
       modelURL: "",
       textureURL: "",
       source: [{
-        url: "../source/textures/uv_grid_opengl.jpg",
+        url: modalpic,
         id: "0",
       },],
     }
   }
 
   componentDidMount() {
-
+    console.log(this.props)
+    if(this.props.location.params !=null){
+      this.setState({
+        sceneName:this.props.location.params.sceneName,
+        sceneDescpition:this.props.location.params.sceneDescpition,
+      });
+    }
   }
   handleClick = (id) => {
     console.log(id);
 
     this.setState({
-      modelName:id,
+      modelName: id,
     });
     console.log("点击了");
   }
@@ -114,12 +121,12 @@ export default class index extends PureComponent {
             <Card className={styles.card} bordered={false}>
               <FormItem label="场景名称：">
                 {/* {getFieldDecorator('SceneName')( */}
-                <Input placeholder="情输入场景名称" />
+                <Input placeholder="情输入场景名称" defaultValue={this.state.sceneName}/>
                 {/* )} */}
               </FormItem>
               <FormItem label="场景描述：">
                 {/* {getFieldDecorator('SceneDetail')( */}
-                <TextArea rows={4} />
+                <TextArea rows={4}  defaultValue={this.state.sceneDescpition}/>
                 {/* )} */}
               </FormItem>
               <FormItem label="背景图片：">
@@ -189,12 +196,16 @@ export default class index extends PureComponent {
           <Upload {...props}>
             <Button type="primary">上传素材</Button>
           </Upload>
+          <br />
           <List
-            grid={{ gutter: 16, column: 4 }}
+            grid={{ gutter: 16, column: 3 }}
             dataSource={this.state.source}
             renderItem={item => (
               <List.Item >
-                <img src={item.url} onClick={this.handleClick.bind(this,item.id)}/>
+                <div >
+                  <img src={item.url} onClick={this.handleClick.bind(this, item.id)} style={{width:40,height:40}}/>
+                </div>
+
 
                 {/* <img src="../source/textures/uv_grid_opengl.jpg" onClick={this.handleClick(item.id)} /> */}
               </List.Item>
@@ -338,7 +349,7 @@ export default class index extends PureComponent {
       });
     }
   }
-  removeModel=()=>{
+  removeModel = () => {
     this.setState({
       localX: 0,
       localY: 0,
@@ -355,10 +366,7 @@ export default class index extends PureComponent {
       modelType: "",
       modelURL: "",
       textureURL: "",
-      source: [{
-        url: "../source/textures/uv_grid_opengl.jpg",
-        id: "0",
-      },],
+      
     });
   }
   SceneConfigure = () => {
@@ -396,13 +404,13 @@ export default class index extends PureComponent {
                       <Col span={6}><Input onChange={event => this.transLateZ(event)} defaultValue={this.state.localZ}></Input></Col>
                     </Row>
                     <br />
-                    {/* <Row >
+                    <Row >
                       <Col span={6}>旋转</Col>
                       <Col span={6}><Input onChange={event => this.xuanzhuanX(event)} defaultValue="0"></Input></Col>
                       <Col span={6}><Input onChange={event => this.xuanzhuanY(event)} defaultValue="0"></Input></Col>
                       <Col span={6}><Input onChange={event => this.xuanzhuanZ(event)} defaultValue="0"></Input></Col>
                     </Row>
-                    <br /> */}
+                    <br />
                     <Row >
                       <Col span={6}>缩放</Col>
                       <Col span={6}><Input onChange={event => this.fangsuoX(event)} defaultValue={this.state.fangsuoX}></Input></Col>
@@ -412,11 +420,11 @@ export default class index extends PureComponent {
                   </Form>
                 </div>
 
-                  
+
               </FormItem>
-                  <div>
-                    <Button type="primary" onClick={this.removeModel}>去除模型</Button>
-                  </div>
+              <div>
+                <Button type="primary" onClick={this.removeModel}>去除模型</Button>
+              </div>
             </Card>
           </Form>
 
@@ -469,17 +477,18 @@ export default class index extends PureComponent {
                   {this.Configure()}
                 </Card>
               </Col>
-              <Col span={4}>
+              <Col span={6}>
                 <Card bordered={false} title='我的素材'>
                   {this.SourceView()}
                   {/* <Sourcecomponent source={this.state.source}/> */}
                 </Card>
               </Col>
-              <Col span={10}>
+              <Col span={8}>
                 <Card bordered={false}>
                   {/* {this.Scene()} */}
                   <Scenecomponent localX={this.state.localX} localY={this.state.localY} localZ={this.state.localZ} fangsuoX={this.state.fangsuoX} fangsuoY={this.state.fangsuoY} fangsuoZ={this.state.fangsuoZ}
-                    backgroundUrl={this.state.backgroundUrl}modelName={this.state.modelName} modelType={this.state.modelType} modelURL={this.state.modelURL} textureURL={this.state.textureURL} />
+                    backgroundUrl={this.state.backgroundUrl} modelName={this.state.modelName} modelType={this.state.modelType} modelURL={this.state.modelURL} textureURL={this.state.textureURL} xuanzhuanX={this.state.xuanzhuanX}
+                    xuanzhuanY={this.state.xuanzhuanY} xuanzhuanZ={this.state.xuanzhuanZ} />
                 </Card>
               </Col>
               <Col span={5}>

@@ -53,6 +53,7 @@ export default defineConfig({
             {
               path: '/welcome',
               name: 'welcome',
+              hideInMenu:true,
               icon: 'smile',
               component: './Welcome',
             },
@@ -99,11 +100,13 @@ export default defineConfig({
               name: 'admin',
               icon: 'crown',
               component: './Admin',
-              authority: ['admin'],
+              hideInMenu:true,
+              // authority: ['admin'],
               routes: [
                 {
                   path: '/admin/sub-page',
                   name: 'sub-page',
+                  hideInMenu:true,
                   icon: 'smile',
                   component: './Welcome',
                   authority: ['admin'],

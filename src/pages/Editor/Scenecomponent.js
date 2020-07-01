@@ -11,6 +11,8 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
 import { ThreeMFLoader } from 'three/examples/jsm/loaders/3MFLoader';
 import { AMFLoader } from 'three/examples/jsm/loaders/AMFLoader';
+import { TeapotBufferGeometry } from 'three/examples/jsm/geometries/TeapotBufferGeometry';
+// import amfmodel from './source/models/amf/rook.amf';
 
 // OBJLoader(THREE);
 
@@ -85,15 +87,15 @@ export default class Scenecomponent extends PureComponent {
   componentDidMount() {
     console.log("子组件")
     console.log(this.props.modelName)
-      this.init4();
-   
+    this.init4();
+
 
   }
   componentDidUpdate() {
 
-    
-      this.init4();
-  
+
+    this.init4();
+
   }
   // 
   init1 = () => {
@@ -366,16 +368,19 @@ export default class Scenecomponent extends PureComponent {
     camera.add(new THREE.PointLight(0xffffff, 0.8));
 
     scene.add(camera);
+
     if (this.props.modelName != "") {
       // this.createGeomety;
-      const geometry = new THREE.BoxGeometry(1, 2, 1, 4);
-      const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+      const geometry = new THREE.BoxGeometry(3, 3, 0.2, 1);
+      const material = new THREE.MeshBasicMaterial({ color: 0xE3D8C4 });
       //平移
       geometry.translate(parseFloat(this.state.localX), parseFloat(this.state.localY), parseFloat(this.state.localZ));
       // geometry.translate(3, 0, 0);
       //放缩
       geometry.scale(parseFloat(this.state.fangsuoX), parseFloat(this.state.fangsuoY), parseFloat(this.state.fangsuoZ));
-
+      geometry.rotateX(this.props.xuanzhuanX);
+      geometry.rotateY(this.props.xuanzhuanY);
+      geometry.rotateZ(this.props.xuanzhuanZ);
       const cube = new THREE.Mesh(geometry, material);
       // cube.rotation.x = this.state.localX;
       // cube.rotation.y = this.state.localY;
@@ -404,7 +409,8 @@ export default class Scenecomponent extends PureComponent {
       var loader = new AMFLoader();
       var path = "./source/models/amf/rook.amf";
       // var path='http://39.96.182.123/three/examples/models/amf/rook.amf';
-      loader.load(this.props.modelURL, function (amfobject) {
+      // loader.load(this.props.modelURL, function (amfobject) {
+      loader.load((path), function (amfobject) {
         console.log("进这里了吗");
         console.log(path);
         console.log(amfobject);

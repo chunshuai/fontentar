@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, notification, Card, Table, Divider, Form, Input ,Popconfirm} from 'antd';
+import { Button, notification, Card, Table, Divider, Form, Input, Popconfirm } from 'antd';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import styles from './style.less';
 import { Link } from 'dva/router';
@@ -51,7 +51,7 @@ export default class index extends React.Component {
             </Form>
         );
     }
-    unlockHandler=(id)=>{
+    unlockHandler = (id) => {
 
     }
     render() {
@@ -83,13 +83,13 @@ export default class index extends React.Component {
                                 <span />
                                 :
                                 <div>
-                                    <Link to={{ pathname: "/productshow/Editor", params: { username: record.username, roleId: record.roleId } }}>编辑</Link>
+                                    <Link to={{ pathname: "/productshow/Editor", params: { sceneName: record.name, sceneDescpition: record.sceneDescpition } }}>编辑</Link>
                                     <Divider type="vertical" />
-                                    <Link to={{ pathname: "/productshow/Editor", params: { username: record.username, roleName: record.role } }}>查看</Link>
+                                    <Link to={{ pathname: "/productshow/Editor", params: { sceneName: record.scenename, sceneDescpition: record.sceneDescpition } }}>查看</Link>
                                     <Divider type="vertical" />
                                     <Popconfirm title="是否删除？" onConfirm={this.unlockHandler.bind(null, record.username)}>
-                                                <a>删除</a>
-                                            </Popconfirm>
+                                        <a>删除</a>
+                                    </Popconfirm>
                                 </div>
                         }
                     </div>
@@ -107,8 +107,9 @@ export default class index extends React.Component {
         const data = [
             {
                 key: '1',
-                name: 'Nike 男鞋',
+                name: '瓷砖',
                 time: '2020-5-20',
+                sceneDescpition:'德利瓷砖',
             },
 
         ];
