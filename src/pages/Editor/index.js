@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { routerRedux, Route, Switch } from 'dva/router';
-import { Spin, Card, Button, Form, Icon, Col, Row, DatePicker, TimePicker, Input, Select, Popover, Tabs, Upload } from 'antd';
+import { Spin, Card, Button, Form, Icon, Col, Row, DatePicker, TimePicker, Input, Select, Popover, Tabs, Upload, List } from 'antd';
 import { connect } from 'dva';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import FooterToolbar from '../../../components/FooterToolbar';
@@ -17,6 +17,7 @@ import { AMFLoader } from 'three/examples/jsm/loaders/AMFLoader';
 import { AppleOutlined, AndroidOutlined } from '@ant-design/icons';
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 import Scenecomponent from './Scenecomponent';
+import Sourcecomponent from './Sourcecomponent';
 
 
 const { Option } = Select;
@@ -51,26 +52,37 @@ export default class index extends PureComponent {
       localX: 0,
       localY: 0,
       localZ: 0,
-      xuanzhuanX:0,
-      xuanzhuanY:0,
-      xuanzhuanZ:0,
-      fangsuoX:1,
-      fangsuoY:1,
-      fangsuoZ:1,
+      xuanzhuanX: 0,
+      xuanzhuanY: 0,
+      xuanzhuanZ: 0,
+      fangsuoX: 1,
+      fangsuoY: 1,
+      fangsuoZ: 1,
       modelName: "",
       sceneName: "",
       sceneDescpition: "",
-      backgroundUrl:"",
-      modelType:"",
-      modelURL:"",
-      textureURL:"",
+      backgroundUrl: "",
+      modelType: "",
+      modelURL: "",
+      textureURL: "",
+      source: [{
+        url: "../source/textures/uv_grid_opengl.jpg",
+        id: "0",
+      },],
     }
   }
 
   componentDidMount() {
-    
+
   }
- 
+  handleClick = (id) => {
+    console.log(id);
+
+    this.setState({
+      modelName:id,
+    });
+    console.log("点击了");
+  }
   Configure = () => {
     // handleChange = info => {
     //   if (info.file.status === 'uploading') {
@@ -177,6 +189,17 @@ export default class index extends PureComponent {
           <Upload {...props}>
             <Button type="primary">上传素材</Button>
           </Upload>
+          <List
+            grid={{ gutter: 16, column: 4 }}
+            dataSource={this.state.source}
+            renderItem={item => (
+              <List.Item >
+                <img src={item.url} onClick={this.handleClick.bind(this,item.id)}/>
+
+                {/* <img src="../source/textures/uv_grid_opengl.jpg" onClick={this.handleClick(item.id)} /> */}
+              </List.Item>
+            )}
+          />,
           {/* <Upload
             name="avatar"
             listType="picture-card"
@@ -242,7 +265,7 @@ export default class index extends PureComponent {
       console.log(value);
       // this.state.localX = value;
       this.setState({
-        localX:value,
+        localX: value,
       });
       console.log(this.state.localX);
     }
@@ -251,7 +274,7 @@ export default class index extends PureComponent {
     if (event && event.target && event.target.value) {
       let value = event.target.value;
       this.setState({
-        localY:value,
+        localY: value,
       });
     }
   }
@@ -259,7 +282,7 @@ export default class index extends PureComponent {
     if (event && event.target && event.target.value) {
       let value = event.target.value;
       this.setState({
-        localZ:value,
+        localZ: value,
       });
     }
   }
@@ -268,7 +291,7 @@ export default class index extends PureComponent {
       let value = event.target.value;
       console.log(value);
       this.setState({
-        xuanzhuanX:value,
+        xuanzhuanX: value,
       });
       console.log(this.state.localX);
     }
@@ -277,7 +300,7 @@ export default class index extends PureComponent {
     if (event && event.target && event.target.value) {
       let value = event.target.value;
       this.setState({
-        xuanzhuanY:value,
+        xuanzhuanY: value,
       });
     }
   }
@@ -285,7 +308,7 @@ export default class index extends PureComponent {
     if (event && event.target && event.target.value) {
       let value = event.target.value;
       this.setState({
-        xuanzhuanZ:value,
+        xuanzhuanZ: value,
       });
     }
   }
@@ -294,7 +317,7 @@ export default class index extends PureComponent {
       let value = event.target.value;
       console.log(value);
       this.setState({
-        fangsuoX:value,
+        fangsuoX: value,
       });
       console.log(this.state.localX);
     }
@@ -303,7 +326,7 @@ export default class index extends PureComponent {
     if (event && event.target && event.target.value) {
       let value = event.target.value;
       this.setState({
-        fangsuoY:value,
+        fangsuoY: value,
       });
     }
   }
@@ -311,7 +334,7 @@ export default class index extends PureComponent {
     if (event && event.target && event.target.value) {
       let value = event.target.value;
       this.setState({
-        fangsuoZ:value,
+        fangsuoZ: value,
       });
     }
   }
@@ -379,7 +402,7 @@ export default class index extends PureComponent {
 
   }
 
- 
+
   returnClick = () => {
     //const { dispatch } = this.props;
     //dispatch(routerRedux.push('selfwbview'));
@@ -424,13 +447,14 @@ export default class index extends PureComponent {
               <Col span={4}>
                 <Card bordered={false} title='我的素材'>
                   {this.SourceView()}
+                  {/* <Sourcecomponent source={this.state.source}/> */}
                 </Card>
               </Col>
               <Col span={10}>
                 <Card bordered={false}>
                   {/* {this.Scene()} */}
-                  <Scenecomponent localX={this.state.localX}localY={this.state.localY}localZ={this.state.localZ} fangsuoX={this.state.fangsuoX} fangsuoY={this.state.fangsuoY} fangsuoZ={this.state.fangsuoZ}
-                  backgroundUrl={this.state.backgroundUrl} modelType={this.state.modelType} modelURL={this.state.modelURL} textureURL={this.state.textureURL}/>
+                  <Scenecomponent localX={this.state.localX} localY={this.state.localY} localZ={this.state.localZ} fangsuoX={this.state.fangsuoX} fangsuoY={this.state.fangsuoY} fangsuoZ={this.state.fangsuoZ}
+                    backgroundUrl={this.state.backgroundUrl}modelName={this.state.modelName} modelType={this.state.modelType} modelURL={this.state.modelURL} textureURL={this.state.textureURL} />
                 </Card>
               </Col>
               <Col span={5}>

@@ -26,23 +26,7 @@ const FormItem = Form.Item;
 const { TabPane } = Tabs;
 const { TextArea } = Input;
 
-function getBase64(img, callback) {
-  const reader = new FileReader();
-  reader.addEventListener('load', () => callback(reader.result));
-  reader.readAsDataURL(img);
-}
 
-function beforeUpload(file) {
-  const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
-  if (!isJpgOrPng) {
-    message.error('You can only upload JPG/PNG file!');
-  }
-  const isLt2M = file.size / 1024 / 1024 < 2;
-  if (!isLt2M) {
-    message.error('Image must smaller than 2MB!');
-  }
-  return isJpgOrPng && isLt2M;
-}
 // @Form.create()
 export default class Scenecomponent extends PureComponent {
   constructor(props) {
@@ -100,12 +84,18 @@ export default class Scenecomponent extends PureComponent {
   // }
   componentDidMount() {
     console.log("子组件")
-    this.init4();
+    console.log(this.props.modelName)
+      this.init4();
+   
+
   }
   componentDidUpdate() {
 
-    this.init4();
+    
+      this.init4();
+  
   }
+  // 
   init1 = () => {
     var container;
 
@@ -376,22 +366,25 @@ export default class Scenecomponent extends PureComponent {
     camera.add(new THREE.PointLight(0xffffff, 0.8));
 
     scene.add(camera);
-    // this.createGeomety;
-    const geometry = new THREE.BoxGeometry(1, 2, 1, 4);
-    const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-    //平移
-    geometry.translate(parseFloat(this.state.localX), parseFloat(this.state.localY), parseFloat(this.state.localZ));
-    // geometry.translate(3, 0, 0);
-    //放缩
-    geometry.scale(parseFloat(this.state.fangsuoX), parseFloat(this.state.fangsuoY), parseFloat(this.state.fangsuoZ));
+    if (this.props.modelName != "") {
+      // this.createGeomety;
+      const geometry = new THREE.BoxGeometry(1, 2, 1, 4);
+      const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+      //平移
+      geometry.translate(parseFloat(this.state.localX), parseFloat(this.state.localY), parseFloat(this.state.localZ));
+      // geometry.translate(3, 0, 0);
+      //放缩
+      geometry.scale(parseFloat(this.state.fangsuoX), parseFloat(this.state.fangsuoY), parseFloat(this.state.fangsuoZ));
 
-    const cube = new THREE.Mesh(geometry, material);
-    // cube.rotation.x = this.state.localX;
-    // cube.rotation.y = this.state.localY;
-    // cube.rotation.z = this.state.localZ;
+      const cube = new THREE.Mesh(geometry, material);
+      // cube.rotation.x = this.state.localX;
+      // cube.rotation.y = this.state.localY;
+      // cube.rotation.z = this.state.localZ;
 
-    this.cube = cube
-    scene.add(cube);
+      this.cube = cube
+      scene.add(cube);
+    }
+
     // 
     var grid = new THREE.GridHelper(50, 50, 0xffffff, 0x555555);
     grid.rotateOnAxis(new THREE.Vector3(1, 0, 0), 90 * (Math.PI / 180));
