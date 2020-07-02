@@ -6,6 +6,9 @@ import proxy from './proxy';
 const { REACT_APP_ENV } = process.env;
 
 export default defineConfig({
+  //部署在非根目录下
+  base:'/fontentar/',
+  publicPath:'/fontentar/',
   hash: true,
   antd: {},
   dva: {
